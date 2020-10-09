@@ -2,7 +2,7 @@
 
 echo "Executing malware..."
 
-python3 payload.py
+python3 payloads
 
 echo "Malware was executed successfully"
 
