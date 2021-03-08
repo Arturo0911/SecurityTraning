@@ -5,9 +5,18 @@ import sys
 import os
 import socket
 
+"""
+@author Arturo Negreiros 
+@date 08/03/2021
+"""
+
+
+
 class Automation:
 
     def __init__(self):
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server = None
         pass
     
     def presentation(self):
@@ -24,28 +33,18 @@ class Automation:
     def initializr_arguments(self):
         try:
             arg = sys.argv[1:]
-            opt, args = getopt.getopt(sys.argv[1:], 'd:s:i:v:r:hb',
-                ['domain=', 'source=', 'info=', 'breach', 'verbose=', 'help', 'report='])
-            print(opt)
+            opt, args = getopt.getopt(sys.argv[1:], 'p:h:h',
+                ['port=', 'host=', 'help',])
+            #print(opt)
             for o,a in opt:
                 # print(opt)
-                print(o)
-                if o in ('-d', '--domain'):
-                    print("domain is arturo.com")
+                #print(o)
 
-                if o in ('-s', '--source'):
-                    print("My home/directory")
-                if o in ('-i', '--info'):
-                    print("learning scripting")
-                if o in ('-b', '--breach'):
-                    print("breach")
-                if o in ('-v', '--verbose'):
-                    print("bla bla bla bla bla bla bla")
+                if o in ('-p', '--port'):
+                    print(a)
+
                 if o in ('-h', '--help'):
-                    print("see my blog about this one")
-                if o in ('-r', '--report'):
-                    print("reporting you")
-
+                    print(True)
         except getopt.GetoptError as e:
             print(e)
     
