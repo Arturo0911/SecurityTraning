@@ -16,9 +16,14 @@ class Automation:
 
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = None
-        pass
     
+    def get_connection(self, port, host):
+        
+        self.client.connect((host, port)) 
+        self.client.send("GET / HTTP/1.1\r\nHost: google.com\r\n\r\n")
+        response = self.cleint.recv(4096)
+        return response
+
     def presentation(self):
         print("***********************************************")
         print("***********************************************")
@@ -45,6 +50,9 @@ class Automation:
 
                 if o in ('-h', '--help'):
                     print(True)
+
+                if o in ('-h', '--host'):
+                    print(a)
         except getopt.GetoptError as e:
             print(e)
     
