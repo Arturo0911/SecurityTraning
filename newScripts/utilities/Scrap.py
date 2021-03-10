@@ -19,11 +19,11 @@ print(""""
 
 
 from urllib.request import urlopen
+from urllib.error import HTTPError
 import getopt
 import sys
 import os
 from bs4 import BeautifulSoup
-
 
 
 class Scrap:
@@ -31,9 +31,18 @@ class Scrap:
     def __init__(self):
         self.args = sys.argv[1:]
         self.base = None
+        self.dataParsed = None
 
     def _usage(self):
         print("The tag -u or --url you must to include the url to scan <https://wherever.com>  ")
+
+    
+    def find_into_url(self, url):
+
+        with urlopen(url) as f:
+
+            self.base = BeautifulSout(f,"html.parser")
+
 
 
     def initializr(self):
@@ -47,12 +56,16 @@ class Scrap:
 
                 if o in ('-u', '--url'):
                     
-                    self.base = BeautifulSoup(urlopen(a), "html.parser")
+                    html = urlopen(a)
+                    base = BeautifulSoup(html, "html.parser")
                     print("[*]  ...captured url")
-                    
-                    print(self.base.find('a').get('value'))
-
-                    print("[*]  ...Finished")
+                    data = base.findAll('a')
+                    #print(base.find('a'))
+                    if data is None:
+                        print("Data cannot be founded")
+                    else:
+                        print(data)
+                        print("[*]  ...Finished")
 
                 if o in ('-h', '--help'):
                     self._usage()
