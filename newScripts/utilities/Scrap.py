@@ -1,23 +1,5 @@
 #!/usr/bin/python3
 
-
-print(""""
-########################################
-#       Arturo Negreiros               #
-#       Payload0911                    #
-#                                      #
-#                                      #
-#                                      #
-#                                      #
-########################################
-""")
-
-
-
-
-
-
-
 from urllib.request import urlopen
 from urllib.error import HTTPError
 import getopt
@@ -31,18 +13,30 @@ class Scrap:
     def __init__(self):
         self.args = sys.argv[1:]
         self.base = None
-        self.dataParsed = None
+        self.data_parsed = None
+        self.emails = list()
 
     def _usage(self):
         print("The tag -u or --url you must to include the url to scan <https://wherever.com>  ")
 
-    
     def find_into_url(self, url):
+        
+        """
+            Methods
+            findAll(tag, attributes, recursive, text, limit, keywords)
+            find(tag, attributes, recursive, text, keywords)
+        """
 
         with urlopen(url) as f:
 
-            self.base = BeautifulSout(f,"html.parser")
-
+            self.base = BeautifulSoup(f,"html.parser")
+            #print(self.base.findAll('a'))
+            self.data_parsed = self.base.findAll('span')
+            if self.data_parsed is None:
+                return None
+            else:
+                for x in self.data_parsed:
+                    print(x.get_text())
 
 
     def initializr(self):
@@ -56,15 +50,10 @@ class Scrap:
 
                 if o in ('-u', '--url'):
                     
-                    html = urlopen(a)
-                    base = BeautifulSoup(html, "html.parser")
-                    print("[*]  ...captured url")
-                    data = base.findAll('a')
-                    #print(base.find('a'))
-                    if data is None:
+                    if self.find_into_url(a) is None:
                         print("Data cannot be founded")
                     else:
-                        print(data)
+                        self.find_into_url(a)
                         print("[*]  ...Finished")
 
                 if o in ('-h', '--help'):
