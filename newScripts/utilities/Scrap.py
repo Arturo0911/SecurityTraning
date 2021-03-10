@@ -17,6 +17,7 @@ class Scrap:
         self.emails = list()
 
     def _usage(self):
+        print("The goal of this project is get any tag information about the web page scanned ")
         print("The tag -u or --url you must to include the url to scan <https://wherever.com>  ")
 
     def find_into_url(self, url):
@@ -26,17 +27,19 @@ class Scrap:
             findAll(tag, attributes, recursive, text, limit, keywords)
             find(tag, attributes, recursive, text, keywords)
         """
+        try:
+            with urlopen(url) as f:
 
-        with urlopen(url) as f:
-
-            self.base = BeautifulSoup(f,"html.parser")
-            #print(self.base.findAll('a'))
-            self.data_parsed = self.base.findAll('span')
-            if self.data_parsed is None:
-                return None
-            else:
-                for x in self.data_parsed:
-                    print(x.get_text())
+                self.base = BeautifulSoup(f,"html.parser")
+                #print(self.base.findAll('a'))
+                self.data_parsed = self.base.findAll('span')
+                if self.data_parsed is None:
+                    return None
+                else:
+                    for x in self.data_parsed:
+                        print(x.get_text())
+        except HTTPError as e:
+            return str(e)
 
 
     def initializr(self):
