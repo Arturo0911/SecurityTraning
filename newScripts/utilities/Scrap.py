@@ -88,8 +88,13 @@ class Scrap:
 
     def execute_payload(self, url):
 
-        payload = "<script>alert(xss);</script>"
-
+        payload_to_send = "<script>alert(xss);</script>"
+        req = requests.post(url+payload_to_send)
+        
+        if payload_to_send in req.text:
+            print("vulnerability discovered")
+        else:
+            print("site is secure")
 
     def initializr(self):
         
@@ -114,6 +119,10 @@ class Scrap:
 
                 if o in ('-a', '--agent'):
                     self.show_user_agent(a)
+
+                if o in ('-e', '--execute'):
+                    self.execute_payload(a)
+
 
         except getopt.error as e:
             print(str(e))
