@@ -7,6 +7,8 @@ import getopt
 import sys
 import os
 from bs4 import BeautifulSoup
+from contextlib import closing
+import requests
 
 
 class Scrap:
@@ -23,9 +25,10 @@ class Scrap:
     
 
     def _errors(self):
-        print(""" Using urllib.request.urlopen() to open a website when crawling, and encounters “HTTP Error 403: Forbidden”. 
-                It possibly due to the server does not know the request is coming from. Some websites will verify the UserAgent 
-                in order to prevent from abnormal visit. So you should provide information of your fake browser visit.""")
+        print("""\n
+        Using urllib.request.urlopen() to open a website when crawling, and encounters “HTTP Error 403: Forbidden”. 
+        It possibly due to the server does not know the request is coming from. Some websites will verify the UserAgent 
+        in order to prevent from abnormal visit. So you should provide information of your fake browser visit.""")
 
 
     def find_into_url(self, url):
@@ -66,18 +69,33 @@ class Scrap:
         'Accept-Language': 'en-US,en;q=0.8',
         'Connection': 'keep-alive'}
             request = Request(url = url, headers = headers)
-            with urlopen(request).read() as f:
-                print(f.reead(100).decode('utf-8'))
+            with closing(urlopen(request).read()) as f:
+                #print(f)
+                self.base = BeautifulSoup(f,"html.parser")
+                self.data_parsed = self.base.findAll('a')
+
+                for x in self.data_parsed:
+
+                    if x.get_text() != "":
+                        print(x.get_text())
+
+                #print(f.read(100).decode('utf-8'))
 
         except Exception as e:
             print(str(e))
+
+
+
+    def execute_payload(self, url):
+
+        payload = "<script>alert(xss);</script>"
 
 
     def initializr(self):
         
         try:
             
-            opt, args = getopt.getopt(self.args, "hu:a:",["help", "url=", "agent="])
+            opt, args = getopt.getopt(self.args, "hu:a:e:",["help", "url=", "agent=", "execute="])
             #print(opt)
 
             for o,a in opt:
