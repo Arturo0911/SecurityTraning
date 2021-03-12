@@ -2,3 +2,8 @@ https://www.osi.es/es/campanas/ingenieria-social/prueba-deteccion-ingenieria-soc
 
 
 Revisar conceptos de WebSpoofing, ataques Cookies, DDOS, INYECCIONES SQL, MALWARE
+
+
+Suit Forense
+
+
